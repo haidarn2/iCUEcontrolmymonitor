@@ -1,8 +1,8 @@
 
 
 
-ControlMyMonitor v1.29
-Copyright (c) 2017 - 2021 Nir Sofer
+ControlMyMonitor v1.36
+Copyright (c) 2017 - 2022 Nir Sofer
 Web site: https://www.nirsoft.net
 
 
@@ -12,10 +12,11 @@ Description
 
 ControlMyMonitor allows you view and modify the settings of your monitor
 (Also known as 'VCP Features'), like brightness, contrast, sharpness,
-red/green/blue color balance, and more... You can modify the monitor
-settings from the GUI and from command-line. You can also export all
-settings of your monitor into a configuration file and then later load
-the same configuration back into your monitor.
+red/green/blue color balance, OSD Language, Input Port (VGA , DVI , HDMI
+) and more... You can modify the monitor settings from the GUI and from
+command-line. You can also export all settings of your monitor into a
+configuration file and then later load the same configuration back into
+your monitor.
 
 
 
@@ -24,7 +25,7 @@ System Requirements
 
 
 * Any version of Windows, starting from Windows Vista and up to Windows
-  10.
+  11.
 * Hardware that supports DDC/CI.
 
 
@@ -32,6 +33,26 @@ System Requirements
 Versions History
 ================
 
+
+* Version 1.36:
+  o Added 'Start As Hidden' option. When this option and 'Put Icon On
+    Tray' option are turned on, the main window of ControlMyMonitor will
+    be invisible on start.
+
+* Version 1.35:
+  o Added 4 display filter options: Display Read+Write, Display Read
+    Only, Display Write Only, Display Manufacturer Specific.
+
+* Version 1.31:
+  o you can now use 'Secondary' as the monitor string in all
+    command-line options in order to specify the secondary monitor.
+
+* Version 1.30:
+  o When there is a DDC/CI error (Error codes like 0xC0262582,
+    0xC0262583), the error description is now displayed in the status bar
+    in addition to the error code.
+  o You can also click the error code with the mouse in order to copy
+    the error code and error description to the clipboard.
 
 * Version 1.29:
   o Added option to choose another font (name and size) to display in
@@ -139,12 +160,12 @@ monitor. You can find the save/load config feature under the File menu
 
 
 
-Error 0xc0262582
-================
+Error 0xc0262582, 0xc0262583 and similar codes
+==============================================
 
-If you get error 0xc0262582 and the main window of ControlMyMonitor is
-empty, it means that Windows operating system cannot connect your monitor
-using DDC/CI.
+If you get error 0xc0262582 (or similar codes) and the main window of
+ControlMyMonitor is empty, it means that Windows operating system cannot
+connect your monitor using DDC/CI.
 Here's what you can do in order to try to solve the problem:
 * Update the driver of your graphics card.
 * Try to plug your monitor using different type of cable/connector
@@ -154,11 +175,29 @@ Here's what you can do in order to try to solve the problem:
 
 
 
+
+Before you report a bug...
+==========================
+
+Be aware that if you have a specific setting that ControlMyMonitor fails
+to set properly or ControlMyMonitor fails to connect your monitor
+completely with error code (usually begins with 0xc02625 ), It's not a
+bug or problem in ControlMyMonitor tool, but in your hardware.
+It might be a bug with the chip of your monitor or with the driver of
+your graphics card or a problem with the cable/connector you use. As a
+programmer of ControlMyMonitor, I cannot help you to debug or fix these
+hardware problems. You can try to contact the manufacturers of your
+hardware and ask them to solve the problem.
+
+
+
 Command-Line Options
 ====================
 
-If you have only one monitor, you can use 'Primary' as your monitor
-string in all command-line options.
+You can use 'Primary' as your monitor string in all command-line options
+in order to specify the primary monitor. You can also use 'Secondary' as
+your monitor string in all command-line options in order to specify the
+secondary monitor.
 If you have multiple monitors, you have to find a string that uniquely
 identifies your monitor. Open ControlMyMonitor , select the desired
 monitor and then press Ctrl+M (Copy Monitor Settings). Paste the string
@@ -210,8 +249,8 @@ monitor.
 
 Here's some examples:
 
-Increase the brightness of the primary monitor by 5%:
-ControlMyMonitor.exe /ChangeValue Primary 10 5
+Increase the brightness of the secondary monitor by 5%:
+ControlMyMonitor.exe /ChangeValue Secondary 10 5
 
 Decrease the contrast of the \\.\DISPLAY1\Monitor0 monitor by 5%:
 ControlMyMonitor.exe /ChangeValue "\\.\DISPLAY1\Monitor0" 12 -5
@@ -293,6 +332,16 @@ Save the current monitors list into a simple text file.
 For all save command-line options, you can specify empty filename in
 order to send the data to stdout, for example:
 ControlMyMonitor.exe /scomma "" | more
+
+
+
+Execute multiple commands at once
+=================================
+
+If you want to execute multiple commands, you can do it in a single line,
+instead of running ControlMyMonitor.exe multiple times, for example:
+ControlMyMonitor.exe /SetValue "\\.\DISPLAY1\Monitor0" 10 70 /SetValue
+"\\.\DISPLAY2\Monitor0" 10 80
 
 
 
